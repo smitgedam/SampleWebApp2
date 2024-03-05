@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="SampleWebApp-master">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="17"/>
+    <property name="source" value="17"/>
+    <path id="SampleWebApp-master.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="WebContent/WEB-INF/lib/checkstyle-7.8.2-all.jar"/>
+        <pathelement location="WebContent/WEB-INF/lib/junit.jar"/>
+        <pathelement location="WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <path id="run.ASTFrame.classpath">
+        <path refid="SampleWebApp-master.classpath"/>
+        <pathelement location="WebContent/WEB-INF/lib/checkstyle-7.8.2-all.jar"/>
+        <pathelement location="WebContent/WEB-INF/lib/junit.jar"/>
+        <pathelement location="WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <path id="run.SampleWebApp-master.classpath">
+        <path refid="SampleWebApp-master.classpath"/>
+        <pathelement location="WebContent/WEB-INF/lib/checkstyle-7.8.2-all.jar"/>
+        <pathelement location="WebContent/WEB-INF/lib/junit.jar"/>
+        <pathelement location="WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/example">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src/example"/>
+            <classpath refid="SampleWebApp-master.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="ASTFrame">
+        <java classname="antlr.debug.misc.ASTFrame" failonerror="true" fork="yes">
+            <classpath refid="run.ASTFrame.classpath"/>
+        </java>
+    </target>
+    <target name="SampleWebApp-master">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="junit.TestCalculator" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="run.SampleWebApp-master.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>
